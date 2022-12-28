@@ -18,6 +18,8 @@ namespace DDona.SimpleAuth.Api
             services.AddSerilog(ConfigureHostBuilder);
             services.AddEntityFramework(Configuration);
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddRepositories();
+            services.AddUnitOfWork();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
