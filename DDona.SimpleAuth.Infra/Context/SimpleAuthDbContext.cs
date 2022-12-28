@@ -5,6 +5,10 @@ namespace DDona.SimpleAuth.Infra.Context
 {
     public class SimpleAuthDbContext : DbContext
     {
+        public SimpleAuthDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
