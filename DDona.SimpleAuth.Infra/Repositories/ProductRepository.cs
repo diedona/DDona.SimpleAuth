@@ -16,5 +16,12 @@ namespace DDona.SimpleAuth.Infra.Repositories
         {
             return await _DbSet.ToListAsync();
         }
+
+        public async Task<IEnumerable<Product>> GetAllProductsWithCategories()
+        {
+            return await _DbSet
+                .Include(x => x.Category)
+                .ToListAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DDona.SimpleAuth.Api.Extensions;
+using System.Text.Json.Serialization;
 
 namespace DDona.SimpleAuth.Api
 {
@@ -20,7 +21,8 @@ namespace DDona.SimpleAuth.Api
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRepositories();
             services.AddUnitOfWork();
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }

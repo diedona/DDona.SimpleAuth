@@ -22,5 +22,12 @@ namespace DDona.SimpleAuth.Api.Controllers
             var products = await _UnitOfWork.ProductRepository.GetAllProducts();
             return Ok(products);
         }
+
+        [HttpGet("with-category")]
+        public async Task<IActionResult> GetAllWithCategory()
+        {
+            var products = await _UnitOfWork.ProductRepository.GetAllProductsWithCategories();
+            return Ok(products);
+        }
     }
 }
