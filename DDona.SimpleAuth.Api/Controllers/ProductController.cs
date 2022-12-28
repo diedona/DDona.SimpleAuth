@@ -1,6 +1,4 @@
-﻿using DDona.SimpleAuth.Domain.Entities;
-using DDona.SimpleAuth.Domain.Enums;
-using DDona.SimpleAuth.Domain.UnitOfWork;
+﻿using DDona.SimpleAuth.Domain.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDona.SimpleAuth.Api.Controllers
