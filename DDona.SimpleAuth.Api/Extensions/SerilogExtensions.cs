@@ -6,10 +6,11 @@ namespace DDona.SimpleAuth.Api.Extensions
 {
     public static class SerilogExtensions
     {
-        public static void AddSerilog(this IServiceCollection services, ConfigureHostBuilder host)
+        public static void AddSerilog(this IServiceCollection services, IConfiguration configuration, ConfigureHostBuilder host)
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console(LogEventLevel.Information)
+                .ReadFrom.Configuration(configuration)
+                //.WriteTo.Console(LogEventLevel.Information)
                 .CreateLogger();
 
             host.UseSerilog(Log.Logger);
