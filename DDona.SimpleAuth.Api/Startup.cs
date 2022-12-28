@@ -22,6 +22,7 @@ namespace DDona.SimpleAuth.Api
             services.AddUnitOfWork();
             services.AddServices();
             services.AddControllersWithConfigurations();
+            services.AddAspNetCoreIdentity();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
@@ -42,6 +43,7 @@ namespace DDona.SimpleAuth.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

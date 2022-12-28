@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using DDona.SimpleAuth.Infra.Context;
+using DDona.SimpleAuth.Infra.Identity;
+using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace DDona.SimpleAuth.Api.Extensions
 {
@@ -9,6 +12,14 @@ namespace DDona.SimpleAuth.Api.Extensions
             services
                 .AddControllers()
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+        }
+
+        public static void AddAspNetCoreIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+            }).AddEntityFrameworkStores<SimpleAuthDbContext>();
         }
     }
 }
