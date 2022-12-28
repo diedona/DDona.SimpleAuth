@@ -1,6 +1,4 @@
 ﻿using Serilog;
-using Serilog.Events;
-using System.Runtime.CompilerServices;
 
 namespace DDona.SimpleAuth.Api.Extensions
 {
@@ -10,7 +8,6 @@ namespace DDona.SimpleAuth.Api.Extensions
         {
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                //.WriteTo.Console(LogEventLevel.Information)
                 .CreateLogger();
 
             host.UseSerilog(Log.Logger);
