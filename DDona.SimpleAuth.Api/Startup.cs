@@ -21,8 +21,7 @@ namespace DDona.SimpleAuth.Api
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRepositories();
             services.AddUnitOfWork();
-            services.AddControllers()
-                .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            services.AddControllersWithConfigurations();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
         }
