@@ -8,10 +8,6 @@ namespace DDona.SimpleAuth.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder
-                .Property(x => x.Name)
-                .IsUnicode(false)
-                .HasMaxLength(600);
         }
     }
 }
