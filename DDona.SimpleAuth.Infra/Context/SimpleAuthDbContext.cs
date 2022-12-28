@@ -1,9 +1,13 @@
 ﻿using DDona.SimpleAuth.Infra.Configurations;
+using DDona.SimpleAuth.Infra.Extensions;
+using DDona.SimpleAuth.Infra.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDona.SimpleAuth.Infra.Context
 {
-    public class SimpleAuthDbContext : DbContext
+    public class SimpleAuthDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public SimpleAuthDbContext(DbContextOptions options) : base(options)
         {
@@ -14,6 +18,7 @@ namespace DDona.SimpleAuth.Infra.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfigurationForIdentityTables();
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
