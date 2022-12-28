@@ -20,6 +20,7 @@ namespace DDona.SimpleAuth.Api
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddRepositories();
             services.AddUnitOfWork();
+            services.AddServices();
             services.AddControllersWithConfigurations();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

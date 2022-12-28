@@ -1,4 +1,4 @@
-﻿using DDona.SimpleAuth.Domain.UnitOfWork;
+﻿using DDona.SimpleAuth.Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDona.SimpleAuth.Api.Controllers
@@ -8,25 +8,25 @@ namespace DDona.SimpleAuth.Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ILogger<ProductController> _Logger;
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IProductService _ProductService;
 
-        public ProductController(ILogger<ProductController> logger, IUnitOfWork unitOfWork)
+        public ProductController(ILogger<ProductController> logger, IProductService productService)
         {
             _Logger = logger;
-            _UnitOfWork = unitOfWork;
+            _ProductService = productService;
         }
 
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
-            var products = await _UnitOfWork.ProductRepository.GetAllProducts();
+            var products = await _ProductService.GetAllProducts();
             return Ok(products);
         }
 
         [HttpGet("with-category")]
         public async Task<IActionResult> GetAllWithCategory()
         {
-            var products = await _UnitOfWork.ProductRepository.GetAllProductsWithCategories();
+            var products = await _ProductService.GetAllProductsWithCategories();
             return Ok(products);
         }
     }
