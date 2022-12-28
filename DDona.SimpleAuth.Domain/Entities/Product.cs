@@ -5,15 +5,17 @@ namespace DDona.SimpleAuth.Domain.Entities
 {
     public class Product : BaseEntity
     {
-        public string Name { get; set; }
-        public ProductUnitEnum Unit { get; set; }
-        public decimal UnitValue { get; set; }
+        public string Name { get; private set; }
+        public ProductUnitEnum Unit { get; private set; }
+        public decimal UnitValue { get; private set; }
+        public Category Category { get; private set; }
 
-        public Product(string name, ProductUnitEnum unit, decimal unitValue)
+        public Product(string name, ProductUnitEnum unit, decimal unitValue, Category category)
         {
             Name = name;
             Unit = unit;
             UnitValue = unitValue;
+            Category = category;
         }
     }
 }

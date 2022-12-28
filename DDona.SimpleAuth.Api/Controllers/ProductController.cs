@@ -18,8 +18,7 @@ namespace DDona.SimpleAuth.Api.Controllers
         [HttpGet()]
         public async Task<IActionResult> GetAll()
         {
-            _Logger.LogInformation("Ok - starting get all...");
-            return Ok(new List<Product>() { new Product("Orange", ProductUnitEnum.Kilograms, 1.25m) });
+            return Ok(new List<Product>() { new Product("Orange", ProductUnitEnum.Kilograms, 1.25m, new Category("Food")) });
         }
     }
 }

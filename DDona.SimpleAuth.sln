@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDona.SimpleAuth.Domain", "DDona.SimpleAuth.Domain\DDona.SimpleAuth.Domain.csproj", "{DCCF8509-1758-4653-8E56-E76058C439D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDona.SimpleAuth.Domain", "DDona.SimpleAuth.Domain\DDona.SimpleAuth.Domain.csproj", "{DCCF8509-1758-4653-8E56-E76058C439D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDona.SimpleAuth.Api", "DDona.SimpleAuth.Api\DDona.SimpleAuth.Api.csproj", "{0B5556E4-A6D7-444B-B37B-8CDEF507A828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDona.SimpleAuth.Api", "DDona.SimpleAuth.Api\DDona.SimpleAuth.Api.csproj", "{0B5556E4-A6D7-444B-B37B-8CDEF507A828}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDona.SimpleAuth.Infra", "DDona.SimpleAuth.Infra\DDona.SimpleAuth.Infra.csproj", "{EF8CB9F1-7E7C-4784-98A0-7222BC3FD3F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0B5556E4-A6D7-444B-B37B-8CDEF507A828}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5556E4-A6D7-444B-B37B-8CDEF507A828}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5556E4-A6D7-444B-B37B-8CDEF507A828}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF8CB9F1-7E7C-4784-98A0-7222BC3FD3F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF8CB9F1-7E7C-4784-98A0-7222BC3FD3F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF8CB9F1-7E7C-4784-98A0-7222BC3FD3F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF8CB9F1-7E7C-4784-98A0-7222BC3FD3F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
