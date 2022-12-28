@@ -10,7 +10,9 @@ namespace DDona.SimpleAuth.Domain.Entities
         public decimal UnitValue { get; private set; }
         public Category Category { get; private set; }
 
-        public Product(string name, ProductUnitEnum unit, decimal unitValue, Category category)
+        private Product() { }
+
+        public Product(string name, ProductUnitEnum unit, decimal unitValue, Category category) : base()
         {
             Name = name;
             Unit = unit;

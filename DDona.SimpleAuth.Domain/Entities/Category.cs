@@ -9,7 +9,9 @@ namespace DDona.SimpleAuth.Domain.Entities
         public string Name { get; private set; }
         public virtual IReadOnlyCollection<Product> Products => _Products.AsReadOnly();
 
-        public Category(string name)
+        private Category() { }
+
+        public Category(string name) : base()
         {
             Name = name;
         }

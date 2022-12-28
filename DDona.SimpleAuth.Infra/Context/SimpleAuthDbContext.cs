@@ -13,6 +13,7 @@ namespace DDona.SimpleAuth.Infra.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         }
     }
 }
