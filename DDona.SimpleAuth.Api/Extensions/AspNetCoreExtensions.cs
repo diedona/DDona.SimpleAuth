@@ -1,5 +1,5 @@
-﻿using DDona.SimpleAuth.Infra.Context;
-using DDona.SimpleAuth.Infra.Identity;
+﻿using DDona.SimpleAuth.Application.Identity;
+using DDona.SimpleAuth.Infra.Context;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 

@@ -1,5 +1,5 @@
-﻿using DDona.SimpleAuth.Domain.Constants;
-using DDona.SimpleAuth.Infra.Identity;
+﻿using DDona.SimpleAuth.Application.Identity;
+using DDona.SimpleAuth.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

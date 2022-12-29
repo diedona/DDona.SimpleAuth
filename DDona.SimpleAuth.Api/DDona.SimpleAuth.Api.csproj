@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DDona.SimpleAuth.Application\DDona.SimpleAuth.Application.csproj" />
     <ProjectReference Include="..\DDona.SimpleAuth.Domain\DDona.SimpleAuth.Domain.csproj" />
     <ProjectReference Include="..\DDona.SimpleAuth.Infra\DDona.SimpleAuth.Infra.csproj" />
   </ItemGroup>

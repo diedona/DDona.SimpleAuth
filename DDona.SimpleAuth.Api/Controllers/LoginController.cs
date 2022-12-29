@@ -1,6 +1,6 @@
 ﻿using DDona.SimpleAuth.Api.Models.AppSettings;
 using DDona.SimpleAuth.Domain.DTO.User;
-using DDona.SimpleAuth.Infra.Identity;
+using DDona.SimpleAuth.Application.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

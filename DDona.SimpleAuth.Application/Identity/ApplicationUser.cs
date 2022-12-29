@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace DDona.SimpleAuth.Infra.Identity
+namespace DDona.SimpleAuth.Application.Identity
 {
     public class ApplicationUser : IdentityUser
     {
