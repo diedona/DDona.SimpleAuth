@@ -24,7 +24,7 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return BadRequest("Failed to authenticate");
 
             if (await _UserManager.CheckPasswordAsync(requestedUser, request.Password))
-                return Ok("nice");
+                return Ok(await _UserManager.GetRolesAsync(requestedUser));
 
             return BadRequest("Failed to authenticate");
         }
