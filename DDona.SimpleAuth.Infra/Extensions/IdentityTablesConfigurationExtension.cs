@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DDona.SimpleAuth.Infra.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDona.SimpleAuth.Infra.Extensions
@@ -9,7 +10,7 @@ namespace DDona.SimpleAuth.Infra.Extensions
         {
             string schema = "identity";
 
-            modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers", schema);
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers", schema);
             modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles", schema);
             modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims", schema);
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles", schema);
