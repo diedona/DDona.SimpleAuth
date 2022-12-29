@@ -18,7 +18,7 @@ namespace DDona.SimpleAuth.Api.Extensions
         {
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedAccount = true;
             }).AddEntityFrameworkStores<SimpleAuthDbContext>();
         }
     }

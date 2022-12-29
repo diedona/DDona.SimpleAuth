@@ -23,10 +23,22 @@ namespace DDona.SimpleAuth.Api.Controllers
             if (requestedUser is null)
                 return BadRequest("Failed to authenticate");
 
-            if (await _UserManager.CheckPasswordAsync(requestedUser, request.Password))
-                return Ok(await _UserManager.GetRolesAsync(requestedUser));
+            if (!await _UserManager.CheckPasswordAsync(requestedUser, request.Password))
+            {
+                await _UserManager.AccessFailedAsync(requestedUser);
+                return BadRequest("Failed to authenticate");
+            }
 
-            return BadRequest("Failed to authenticate");
+            if(!requestedUser.EmailConfirmed || requestedUser.Inactive)
+            {
+                await _UserManager.AccessFailedAsync(requestedUser);
+                return BadRequest("Failed to authenticate");
+            }
+
+            await _UserManager.ResetAccessFailedCountAsync(requestedUser);
+            return Ok(await _UserManager.GetRolesAsync(requestedUser));
+
+            
         }
 
         [HttpPost("create-user")]
@@ -37,7 +49,9 @@ namespace DDona.SimpleAuth.Api.Controllers
                 UserName = createUserDTO.Email,
                 Email = createUserDTO.Email,
                 FirstName = createUserDTO.FirstName,
-                LastName = createUserDTO.LastName
+                LastName = createUserDTO.LastName,
+                Inactive = false,
+                LockoutEnabled = false
             };
 
             var result = await _UserManager.CreateAsync(user, createUserDTO.Password);

@@ -5,8 +5,8 @@ namespace DDona.SimpleAuth.Infra.Identity
 {
     public class ApplicationUser : IdentityUser, IDomainApplicationUser
     {
+        public bool Inactive { get; set; }
         public string FirstName { get; set; }
-
         public string LastName { get; set; }
     }
 }
