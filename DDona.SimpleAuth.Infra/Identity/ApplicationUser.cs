@@ -1,12 +1,11 @@
-﻿using DDona.SimpleAuth.Domain.Entities.ApplicationUser;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace DDona.SimpleAuth.Infra.Identity
 {
-    public class ApplicationUser : IdentityUser, IDomainApplicationUser
+    public class ApplicationUser : IdentityUser
     {
         public bool Inactive { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
     }
 }

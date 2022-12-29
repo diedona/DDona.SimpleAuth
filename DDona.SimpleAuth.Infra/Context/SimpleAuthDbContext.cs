@@ -16,8 +16,8 @@ namespace DDona.SimpleAuth.Infra.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfigurationForIdentityTables();
             modelBuilder.SeedIdentityTablesFirstAdminData();
         }

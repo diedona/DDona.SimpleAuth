@@ -40,9 +40,7 @@ namespace DDona.SimpleAuth.Api.Controllers
             }
 
             await _UserManager.ResetAccessFailedCountAsync(requestedUser);
-            return Ok(await _UserManager.GetRolesAsync(requestedUser));
-
-            
+            return Ok(await _UserManager.GetRolesAsync(requestedUser));            
         }
 
         [HttpPost("create-user")]

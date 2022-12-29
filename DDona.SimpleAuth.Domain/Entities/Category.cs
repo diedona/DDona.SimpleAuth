@@ -4,12 +4,10 @@ namespace DDona.SimpleAuth.Domain.Entities
 {
     public class Category : BaseEntity
     {
-        private readonly List<Product> _Products = new List<Product>();
+        private readonly List<Product> _Products = new();
 
         public string Name { get; private set; }
-        public virtual IReadOnlyCollection<Product> Products => _Products.AsReadOnly();
-
-        private Category() { }
+        public IReadOnlyCollection<Product> Products => _Products.AsReadOnly();
 
         public Category(string name) : base()
         {

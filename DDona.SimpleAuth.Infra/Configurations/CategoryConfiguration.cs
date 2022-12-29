@@ -8,6 +8,8 @@ namespace DDona.SimpleAuth.Infra.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
+            builder.HasMany(category => category.Products)
+                .WithOne(product => product.Category);
         }
     }
 }
