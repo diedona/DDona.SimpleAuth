@@ -4,6 +4,7 @@ using DDona.SimpleAuth.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DDona.SimpleAuth.Infra.Migrations
 {
     [DbContext(typeof(SimpleAuthDbContext))]
-    partial class SimpleAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221229001351_AspNetCoreIdentityTables")]
+    partial class AspNetCoreIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,26 +171,6 @@ namespace DDona.SimpleAuth.Infra.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", "identity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "8a521141-3f8e-4a1f-ae59-893445b475b8",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6782a2c9-7a2b-4d39-b515-abdb87434366",
-                            Email = "admin@system",
-                            EmailConfirmed = true,
-                            FirstName = "System",
-                            LastName = "Owner",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@SYSTEM",
-                            NormalizedUserName = "ADMIN@SYSTEM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENJGDIq9GK82OoALxALrkOmfDlHRRB2hJLz/EClT8cJm4HdmunK715o279IaznS2PQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "95020a1e-d947-4b4f-b3ba-2e5feaa89639",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@system"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -222,15 +204,6 @@ namespace DDona.SimpleAuth.Infra.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", "identity");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "903d67fb-019c-4f9c-9754-d9db3386aead",
-                            ConcurrencyStamp = "b9964963-b483-47ed-bfb9-829ea6950a23",
-                            Name = "InitialAdmin",
-                            NormalizedName = "INITIALADMIN"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -342,13 +315,6 @@ namespace DDona.SimpleAuth.Infra.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", "identity");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "8a521141-3f8e-4a1f-ae59-893445b475b8",
-                            RoleId = "903d67fb-019c-4f9c-9754-d9db3386aead"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
