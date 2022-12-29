@@ -1,11 +1,13 @@
 ﻿namespace DDona.SimpleAuth.Api.Models.AppSettings
 {
-    public class JwtConfiguration
+    public class JwtBearerConfiguration
     {
-        public string? Issuer { get; }
-        public string? Audience { get; }
-        public string? Key { get; }
-        public string? LifeTimeMinutes { get; }
+        public const string SectionName = "JwtBearerConfiguration";
+
+        public string Issuer { get; set; } = string.Empty;
+        public string Audience { get; set; } = string.Empty;
+        public string Key { get; set; } = string.Empty;
+        public string LifeTimeMinutes { get; set; } = string.Empty;
 
         public int LifeTimeMinutesInteger => string.IsNullOrEmpty(LifeTimeMinutes)
             ? 0

@@ -1,7 +1,9 @@
-﻿using DDona.SimpleAuth.Domain.DTO.User;
+﻿using DDona.SimpleAuth.Api.Models.AppSettings;
+using DDona.SimpleAuth.Domain.DTO.User;
 using DDona.SimpleAuth.Infra.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -10,10 +12,12 @@ namespace DDona.SimpleAuth.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _UserManager;
+        private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public LoginController(UserManager<ApplicationUser> userManager)
+        public LoginController(UserManager<ApplicationUser> userManager, IOptions<JwtBearerConfiguration> jwtBearerConfigurationOptions)
         {
             _UserManager = userManager;
+            _JwtBearerConfiguration = jwtBearerConfigurationOptions.Value;
         }
 
         [HttpPost]
