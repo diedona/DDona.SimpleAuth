@@ -19,6 +19,7 @@ namespace DDona.SimpleAuth.Infra.Context
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfigurationForIdentityTables();
+            modelBuilder.SeedIdentityTablesFirstAdminData();
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
