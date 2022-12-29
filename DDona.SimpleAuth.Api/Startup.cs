@@ -30,7 +30,7 @@ namespace DDona.SimpleAuth.Api
         public void ConfigureJson()
         {
             string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-            Configuration.AddJsonFile($"appsettings.{environment}.json", false, true);
+            Configuration.AddJsonFile($"appsettings.{environment}.json", optional: true);
         }
 
         public void Configure(WebApplication app)
