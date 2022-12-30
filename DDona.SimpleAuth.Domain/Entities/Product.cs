@@ -9,6 +9,7 @@ namespace DDona.SimpleAuth.Domain.Entities
         public ProductUnitEnum Unit { get; private set; }
         public decimal UnitValue { get; private set; }
         public Category Category { get; private set; }
+        public Guid CategoryId { get; private set; }
 
         private Product() { }
 
