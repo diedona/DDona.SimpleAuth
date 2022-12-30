@@ -4,6 +4,7 @@ using DDona.SimpleAuth.Application.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using DDona.SimpleAuth.Application.Services.Interfaces;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -11,36 +12,22 @@ namespace DDona.SimpleAuth.Api.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _UserManager;
+        private readonly IAuthenticationService _AuthenticationService;
         private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public LoginController(UserManager<ApplicationUser> userManager, IOptions<JwtBearerConfiguration> jwtBearerConfigurationOptions)
+        public LoginController(IAuthenticationService authenticationService, IOptions<JwtBearerConfiguration> jwtBearerConfigurationOptions)
         {
-            _UserManager = userManager;
+            _AuthenticationService = authenticationService;
             _JwtBearerConfiguration = jwtBearerConfigurationOptions.Value;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginUserDTO request)
         {
-            var requestedUser = await _UserManager.FindByEmailAsync(request.Email);
-            if (requestedUser is null)
+            if (!await _AuthenticationService.AuthenticateUser(request.Email, request.Password))
                 return BadRequest("Failed to authenticate");
 
-            if (!await _UserManager.CheckPasswordAsync(requestedUser, request.Password))
-            {
-                await _UserManager.AccessFailedAsync(requestedUser);
-                return BadRequest("Failed to authenticate");
-            }
-
-            if(!requestedUser.EmailConfirmed || requestedUser.Inactive)
-            {
-                await _UserManager.AccessFailedAsync(requestedUser);
-                return BadRequest("Failed to authenticate");
-            }
-
-            await _UserManager.ResetAccessFailedCountAsync(requestedUser);
-            return Ok(await _UserManager.GetRolesAsync(requestedUser));            
+            return Ok(await _AuthenticationService.GetUserRolesAsync(request.Email));        
         }
 
         [HttpPost("create-user")]
@@ -56,7 +43,7 @@ namespace DDona.SimpleAuth.Api.Controllers
                 LockoutEnabled = false
             };
 
-            var result = await _UserManager.CreateAsync(user, createUserDTO.Password);
+            var result = await _AuthenticationService.CreateAsync(user, createUserDTO.Password);
             if (result.Succeeded)
                 return Ok();
 
