@@ -31,15 +31,7 @@ namespace DDona.SimpleAuth.Api.Controllers
             if (!await _AuthenticationService.AuthenticateUser(request.Email, request.Password))
                 return BadRequest("Failed to authenticate");
 
-            var roles = await _AuthenticationService.GetUserRolesAsync(request.Email);
-            var claims = new List<Claim>() { new Claim(ClaimTypes.Sid, request.Email) };
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            var token = GetToken(claims);
-
+            var token = await _AuthenticationService.GenerateToken(request.Email);
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -72,22 +64,6 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return Ok();
 
             return BadRequest(result.Errors);
-        }
-
-        private JwtSecurityToken GetToken(List<Claim> claims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
-            var minutesLifeTime = _JwtBearerConfiguration.LifeTimeMinutesInteger;
-
-            var token = new JwtSecurityToken(
-                issuer: _JwtBearerConfiguration.Issuer,
-                audience: _JwtBearerConfiguration.Audience,
-                expires: DateTime.Now.AddMinutes(minutesLifeTime),
-                claims: claims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-
-            return token;
         }
     }
 }
