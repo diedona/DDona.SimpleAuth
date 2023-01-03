@@ -13,12 +13,14 @@ namespace DDona.SimpleAuth.Application.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserManager _UserManager;
+        private readonly IRoleManager _RoleManager;
         private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration)
+        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration, IRoleManager roleManager)
         {
             _UserManager = userManager;
             _JwtBearerConfiguration = jwtBearerConfiguration.Value;
+            _RoleManager = roleManager;
         }
 
         public async Task<bool> AuthenticateUser(string email, string password)
@@ -30,7 +32,7 @@ namespace DDona.SimpleAuth.Application.Services
             if (!await _UserManager.CheckPasswordAsync(requestedUser, password))
                 return false;
 
-            if (!requestedUser.EmailConfirmed || requestedUser.Inactive)
+            if (requestedUser.Inactive)
                 return false;
 
             return true;
@@ -65,9 +67,26 @@ namespace DDona.SimpleAuth.Application.Services
             return token;
         }
 
-        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string roleName)
         {
-            return await _UserManager.CreateAsync(user, password);
+            var userCreationStatus = await _UserManager.CreateAsync(user, password);
+            bool errorWhileCreating = userCreationStatus.Errors.Any();
+            if (errorWhileCreating)
+                return userCreationStatus;
+
+            var roleExists = await _RoleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                await _UserManager.DeleteAsync(user);
+                return IdentityResult.Failed(new IdentityError() { Description = "Role does not exist" });
+            }
+
+            var addToRoleStatus = await _UserManager.AddToRoleAsync(user, roleName);
+            bool errorWhileAddRole = addToRoleStatus.Errors.Any();
+            if (errorWhileAddRole)
+                await _UserManager.DeleteAsync(user);
+
+            return addToRoleStatus;
         }
     }
 }

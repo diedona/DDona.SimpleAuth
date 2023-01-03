@@ -10,6 +10,7 @@ namespace DDona.SimpleAuth.Api.Extensions
         public static void AddApplicationUserManager(this IServiceCollection services)
         {
             services.AddScoped<IUserManager, ApplicationUserManager>();
+            services.AddScoped<IRoleManager, ApplicationRoleManager>();
         }
 
         public static void AddApplicationServices(this IServiceCollection services)

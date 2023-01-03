@@ -34,5 +34,15 @@ namespace DDona.SimpleAuth.Infra.Identity
         {
             return await _UserManager.GetRolesAsync(user);
         }
+
+        public async Task<IdentityResult> AddToRoleAsync(ApplicationUser user, string roleName)
+        {
+            return await _UserManager.AddToRoleAsync(user, roleName);
+        }
+
+        public async Task<IdentityResult> DeleteAsync(ApplicationUser user)
+        {
+            return await _UserManager.DeleteAsync(user);
+        }
     }
 }

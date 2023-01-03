@@ -64,7 +64,7 @@ namespace DDona.SimpleAuth.Api.Controllers
                 LockoutEnabled = false
             };
 
-            var result = await _AuthenticationService.CreateAsync(user, createUserDTO.Password);
+            var result = await _AuthenticationService.CreateAsync(user, createUserDTO.Password, createUserDTO.RoleName);
             if (result.Succeeded)
                 return Ok();
 

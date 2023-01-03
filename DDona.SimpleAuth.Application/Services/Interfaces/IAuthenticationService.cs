@@ -8,6 +8,6 @@ namespace DDona.SimpleAuth.Application.Services.Interfaces
     {
         Task<bool> AuthenticateUser(string email, string password);
         Task<JwtSecurityToken> GenerateToken(string email);
-        Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
+        Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string role);
     }
 }
