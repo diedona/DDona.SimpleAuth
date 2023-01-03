@@ -31,6 +31,13 @@ namespace DDona.SimpleAuth.Api.Extensions
                     ValidateIssuerSigningKey = true,
                     ClockSkew = TimeSpan.Zero
                 };
+
+                options.Events = new JwtBearerEvents();
+                options.Events.OnTokenValidated = (TokenValidatedContext context) =>
+                {
+                    var user = context.Principal;
+                    return Task.CompletedTask;
+                };
             });
         }
     }
