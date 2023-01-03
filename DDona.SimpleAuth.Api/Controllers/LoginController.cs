@@ -1,10 +1,14 @@
-﻿using DDona.SimpleAuth.Api.Models.AppSettings;
-using DDona.SimpleAuth.Domain.DTO.User;
+﻿using DDona.SimpleAuth.Domain.DTO.User;
 using DDona.SimpleAuth.Application.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using DDona.SimpleAuth.Application.Services.Interfaces;
+using DDona.SimpleAuth.Application.Models.AppSettings;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -27,7 +31,27 @@ namespace DDona.SimpleAuth.Api.Controllers
             if (!await _AuthenticationService.AuthenticateUser(request.Email, request.Password))
                 return BadRequest("Failed to authenticate");
 
-            return Ok(await _AuthenticationService.GetUserRolesAsync(request.Email));        
+            var roles = await _AuthenticationService.GetUserRolesAsync(request.Email);
+            var claims = new List<Claim>() { new Claim(ClaimTypes.Sid, request.Email) };
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var token = GetToken(claims);
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiration = token.ValidTo
+            });
+        }
+
+        [HttpGet("secured")]
+        [Authorize]
+        public async Task<IActionResult> Secured()
+        {
+            return Ok("you are worthy");
         }
 
         [HttpPost("create-user")]
@@ -48,6 +72,22 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return Ok();
 
             return BadRequest(result.Errors);
+        }
+
+        private JwtSecurityToken GetToken(List<Claim> claims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
+            var minutesLifeTime = _JwtBearerConfiguration.LifeTimeMinutesInteger;
+
+            var token = new JwtSecurityToken(
+                issuer: _JwtBearerConfiguration.Issuer,
+                audience: _JwtBearerConfiguration.Audience,
+                expires: DateTime.Now.AddMinutes(minutesLifeTime),
+                claims: claims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+
+            return token;
         }
     }
 }

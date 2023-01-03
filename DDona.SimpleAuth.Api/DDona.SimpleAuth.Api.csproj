@@ -24,4 +24,8 @@
     <ProjectReference Include="..\DDona.SimpleAuth.Infra\DDona.SimpleAuth.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\AppSettings\" />
+  </ItemGroup>
+
 </Project>

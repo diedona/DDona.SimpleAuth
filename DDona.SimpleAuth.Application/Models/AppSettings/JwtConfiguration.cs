@@ -1,4 +1,4 @@
-﻿namespace DDona.SimpleAuth.Api.Models.AppSettings
+﻿namespace DDona.SimpleAuth.Application.Models.AppSettings
 {
     public class JwtBearerConfiguration
     {
