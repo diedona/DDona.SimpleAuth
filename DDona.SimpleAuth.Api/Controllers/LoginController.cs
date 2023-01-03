@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using DDona.SimpleAuth.Domain.Constants;
+using DDona.SimpleAuth.Api.Extensions;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -18,12 +19,10 @@ namespace DDona.SimpleAuth.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IAuthenticationService _AuthenticationService;
-        private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public LoginController(IAuthenticationService authenticationService, IOptions<JwtBearerConfiguration> jwtBearerConfigurationOptions)
+        public LoginController(IAuthenticationService authenticationService)
         {
             _AuthenticationService = authenticationService;
-            _JwtBearerConfiguration = jwtBearerConfigurationOptions.Value;
         }
 
         [HttpPost]
@@ -51,7 +50,9 @@ namespace DDona.SimpleAuth.Api.Controllers
         [Authorize(Roles = $"{UserRolesConstants.Administrator},{UserRolesConstants.Worker}")]
         public async Task<IActionResult> SecuredWorker()
         {
-            return Ok("Hm, either you are administrator or worker.");
+            string username = User.GetUsername();
+            string role = User.GetRole();
+            return Ok($"Hm... {username} - either you are administrator or worker. But i think you are '{role}', right?");
         }
 
         [HttpPost("create-user")]
