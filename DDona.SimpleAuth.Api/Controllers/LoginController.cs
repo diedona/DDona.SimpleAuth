@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using DDona.SimpleAuth.Domain.Constants;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -39,14 +40,22 @@ namespace DDona.SimpleAuth.Api.Controllers
             });
         }
 
-        [HttpGet("secured")]
-        [Authorize]
+        [HttpGet("secured-administrator")]
+        [Authorize(Roles = UserRolesConstants.Administrator)]
         public async Task<IActionResult> Secured()
         {
-            return Ok("you are worthy");
+            return Ok("you are worthy, administrator");
+        }
+
+        [HttpGet("secured-worker")]
+        [Authorize(Roles = $"{UserRolesConstants.Administrator},{UserRolesConstants.Worker}")]
+        public async Task<IActionResult> SecuredWorker()
+        {
+            return Ok("Hm, either you are administrator or worker.");
         }
 
         [HttpPost("create-user")]
+        [Authorize(Roles = UserRolesConstants.Administrator)]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO createUserDTO)
         {
             var user = new ApplicationUser

@@ -2,7 +2,7 @@
 {
     public static class UserRolesConstants
     {
-        public static string Administrator => "Administrator";
-        public static string Worker => "Worker";
+        public const string Administrator = "Administrator";
+        public const string Worker = "Worker";
     }
 }
