@@ -1,13 +1,8 @@
 ﻿using DDona.SimpleAuth.Domain.DTO.User;
 using DDona.SimpleAuth.Application.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using DDona.SimpleAuth.Application.Services.Interfaces;
-using DDona.SimpleAuth.Application.Models.AppSettings;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Api.Extensions;
