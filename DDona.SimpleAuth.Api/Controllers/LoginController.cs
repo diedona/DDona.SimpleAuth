@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Api.Extensions;
 using DDona.SimpleAuth.Application.Identity.Entities;
+using DDona.SimpleAuth.Application.Models.Jwt;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -27,6 +28,16 @@ namespace DDona.SimpleAuth.Api.Controllers
 
             var token = await _AuthenticationService.GenerateToken(request.Email);
             return Ok(token);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] JwtOldTokenRequest oldToken)
+        {
+            if(oldToken is null || string.IsNullOrEmpty(oldToken.currentToken))
+                return BadRequest();
+
+            var principal = _AuthenticationService.GetPrincipalFromExpiredToken(oldToken.currentToken);
+            return Ok("ah ok");
         }
 
         [HttpGet("secured-administrator")]

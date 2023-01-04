@@ -28,6 +28,8 @@ namespace DDona.SimpleAuth.Application.Services
             _RefreshTokenManager = refreshTokenManager;
         }
 
+        private SymmetricSecurityKey GetSymmetrictSecurityKey() => new(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
+
         public async Task<bool> AuthenticateUser(string email, string password)
         {
             var requestedUser = await _UserManager.FindByEmailAsync(email);
@@ -59,14 +61,13 @@ namespace DDona.SimpleAuth.Application.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
             var minutesLifeTime = _JwtBearerConfiguration.AccessTokenLifeTimeMinutesInteger;
             var token = new JwtSecurityToken(
                 issuer: _JwtBearerConfiguration.Issuer,
                 audience: _JwtBearerConfiguration.Audience,
                 expires: DateTime.UtcNow.AddMinutes(minutesLifeTime),
                 claims: claims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(GetSymmetrictSecurityKey(), SecurityAlgorithms.HmacSha256)
             );
 
             return new JwtTokenResponse()
@@ -120,6 +121,27 @@ namespace DDona.SimpleAuth.Application.Services
                 await _UserManager.DeleteAsync(user);
 
             return addToRoleStatus;
+        }
+
+        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string accessToken)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidAudience = _JwtBearerConfiguration.Audience,
+                ValidateIssuer = true,
+                ValidIssuer = _JwtBearerConfiguration.Issuer,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = GetSymmetrictSecurityKey(),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            return principal;
         }
     }
 }
