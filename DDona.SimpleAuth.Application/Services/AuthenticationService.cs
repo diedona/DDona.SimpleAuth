@@ -55,7 +55,7 @@ namespace DDona.SimpleAuth.Application.Services
             }
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
-            var minutesLifeTime = _JwtBearerConfiguration.LifeTimeMinutesInteger;
+            var minutesLifeTime = _JwtBearerConfiguration.AccessTokenLifeTimeMinutesInteger;
             var token = new JwtSecurityToken(
                 issuer: _JwtBearerConfiguration.Issuer,
                 audience: _JwtBearerConfiguration.Audience,
