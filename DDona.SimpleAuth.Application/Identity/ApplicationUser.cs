@@ -7,5 +7,6 @@ namespace DDona.SimpleAuth.Application.Identity
         public bool Inactive { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
+        public ICollection<ApplicationUserRefreshToken> RefreshTokens { get; set; } = new List<ApplicationUserRefreshToken>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DDona.SimpleAuth.Application.Identity;
 using DDona.SimpleAuth.Domain.Constants;
+using DDona.SimpleAuth.Infra.Configurations.Application;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,17 +8,18 @@ namespace DDona.SimpleAuth.Infra.Extensions
 {
     public static class IdentityTablesConfigurationExtension
     {
+        public const string Schema = "identity";
         public static void ApplyConfigurationForIdentityTables(this ModelBuilder modelBuilder)
         {
-            string schema = "identity";
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers", Schema);
+            modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles", Schema);
+            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims", Schema);
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles", Schema);
+            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins", Schema);
+            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims", Schema);
+            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserTokens", Schema);
 
-            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers", schema);
-            modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles", schema);
-            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("AspNetUserClaims", schema);
-            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("AspNetUserRoles", schema);
-            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("AspNetUserLogins", schema);
-            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("AspNetRoleClaims", schema);
-            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("AspNetUserTokens", schema);
+            modelBuilder.ApplyConfiguration(new ApplicationUserRefreshTokenConfiguration());
         }
 
         public static void SeedIdentityTablesFirstAdminData(this ModelBuilder modelBuilder)
