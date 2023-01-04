@@ -1,4 +1,4 @@
-﻿using DDona.SimpleAuth.Application.Identity;
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
 using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Infra.Configurations.Application;
 using Microsoft.AspNetCore.Identity;

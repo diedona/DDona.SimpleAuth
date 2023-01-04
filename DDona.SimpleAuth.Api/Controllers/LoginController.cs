@@ -1,10 +1,10 @@
 ﻿using DDona.SimpleAuth.Domain.DTO.User;
-using DDona.SimpleAuth.Application.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DDona.SimpleAuth.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Api.Extensions;
+using DDona.SimpleAuth.Application.Identity.Entities;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {

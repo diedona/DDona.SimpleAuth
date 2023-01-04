@@ -1,4 +1,4 @@
-﻿namespace DDona.SimpleAuth.Application.Identity
+﻿namespace DDona.SimpleAuth.Application.Identity.Interfaces
 {
     public interface IRoleManager
     {

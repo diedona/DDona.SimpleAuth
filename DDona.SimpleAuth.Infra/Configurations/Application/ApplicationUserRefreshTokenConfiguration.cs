@@ -1,5 +1,4 @@
-﻿
-using DDona.SimpleAuth.Application.Identity;
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
 using DDona.SimpleAuth.Infra.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

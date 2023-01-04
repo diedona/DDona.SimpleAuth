@@ -1,4 +1,5 @@
-﻿using DDona.SimpleAuth.Application.Identity;
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
+using DDona.SimpleAuth.Application.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace DDona.SimpleAuth.Infra.Identity

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
+using Microsoft.AspNetCore.Identity;
 
-namespace DDona.SimpleAuth.Application.Identity
+namespace DDona.SimpleAuth.Application.Identity.Interfaces
 {
     public interface IUserManager
     {

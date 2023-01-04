@@ -1,4 +1,5 @@
-﻿using DDona.SimpleAuth.Application.Identity;
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
+using DDona.SimpleAuth.Application.Identity.Interfaces;
 using DDona.SimpleAuth.Application.Models.AppSettings;
 using DDona.SimpleAuth.Application.Models.Jwt;
 using DDona.SimpleAuth.Application.Services.Interfaces;
@@ -16,13 +17,15 @@ namespace DDona.SimpleAuth.Application.Services
     {
         private readonly IUserManager _UserManager;
         private readonly IRoleManager _RoleManager;
+        private readonly IRefreshTokenManager _RefreshTokenManager;
         private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration, IRoleManager roleManager)
+        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration, IRoleManager roleManager, IRefreshTokenManager refreshTokenManager)
         {
             _UserManager = userManager;
             _JwtBearerConfiguration = jwtBearerConfiguration.Value;
             _RoleManager = roleManager;
+            _RefreshTokenManager = refreshTokenManager;
         }
 
         public async Task<bool> AuthenticateUser(string email, string password)
@@ -61,7 +64,7 @@ namespace DDona.SimpleAuth.Application.Services
             var token = new JwtSecurityToken(
                 issuer: _JwtBearerConfiguration.Issuer,
                 audience: _JwtBearerConfiguration.Audience,
-                expires: DateTime.Now.AddMinutes(minutesLifeTime),
+                expires: DateTime.UtcNow.AddMinutes(minutesLifeTime),
                 claims: claims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
@@ -76,11 +79,11 @@ namespace DDona.SimpleAuth.Application.Services
 
         private async Task<string> GenerateRefreshToken(string email)
         {
-            var user = _UserManager.FindByEmailAsync(email);
+            var user = await _UserManager.FindByEmailAsync(email);
             string refreshToken = GenerateRandomToken();
+            DateTime validTo = DateTime.UtcNow.AddMinutes(_JwtBearerConfiguration.RefreshTokenLifeTimeMinutesInteger);
 
-            // TODO: create application repository to persist
-            //await _RefreshTokenRepository.Add(user.Id, refreshToken, _JwtBearerConfiguration.RefreshTokenLifeTimeMinutesInteger);
+            await _RefreshTokenManager.AddTokenToUser(user.Id, refreshToken, validTo);
             return refreshToken;
         }
 
