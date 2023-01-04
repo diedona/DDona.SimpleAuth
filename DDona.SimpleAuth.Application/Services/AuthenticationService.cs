@@ -79,15 +79,20 @@ namespace DDona.SimpleAuth.Application.Services
 
         private async Task<string> GenerateRefreshToken(string email)
         {
-            var user = await _UserManager.FindByEmailAsync(email);
-            string refreshToken = GenerateRandomToken();
-            DateTime validTo = DateTime.UtcNow.AddMinutes(_JwtBearerConfiguration.RefreshTokenLifeTimeMinutesInteger);
-
-            await _RefreshTokenManager.AddTokenToUser(user.Id, refreshToken, validTo);
-            return refreshToken;
+            ApplicationUser user = await _UserManager.FindByEmailAsync(email);
+            ApplicationUserRefreshToken newRefreshToken = GenerateRefreshTokenEntity(user.Id);
+            await _RefreshTokenManager.SaveToken(newRefreshToken);
+            return newRefreshToken.Token;
         }
 
-        private string GenerateRandomToken()
+        private ApplicationUserRefreshToken GenerateRefreshTokenEntity(string userId)
+        {
+            string refreshToken = GenerateRandomString();
+            DateTime validTo = DateTime.UtcNow.AddMinutes(_JwtBearerConfiguration.RefreshTokenLifeTimeMinutesInteger);
+            return new ApplicationUserRefreshToken(userId, refreshToken, validTo);
+        }
+
+        private string GenerateRandomString()
         {
             var randomNumber = new byte[64];
             using var rng = RandomNumberGenerator.Create();

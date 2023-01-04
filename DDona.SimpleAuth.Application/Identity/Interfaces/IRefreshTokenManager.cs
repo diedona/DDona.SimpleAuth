@@ -1,7 +1,10 @@
-﻿namespace DDona.SimpleAuth.Application.Identity.Interfaces
+﻿using DDona.SimpleAuth.Application.Identity.Entities;
+
+namespace DDona.SimpleAuth.Application.Identity.Interfaces
 {
     public interface IRefreshTokenManager
     {
-        Task AddTokenToUser(string userId, string refreshToken, DateTime validTo);
+        Task SaveToken(ApplicationUserRefreshToken refreshToken);
+        Task<ApplicationUserRefreshToken?> FindRefreshToken(string userId, string refreshToken);
     }
 }
