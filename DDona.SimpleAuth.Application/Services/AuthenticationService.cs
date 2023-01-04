@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace DDona.SimpleAuth.Application.Services
@@ -69,8 +70,22 @@ namespace DDona.SimpleAuth.Application.Services
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
                 AccessTokenExpiration = token.ValidTo,
-                RefreshToken = "nothing yet"
+                RefreshToken = await GenerateRefreshToken(email)
             };
+        }
+
+        private async Task<string> GenerateRefreshToken(string email)
+        {
+            var user = _UserManager.FindByEmailAsync(email);
+
+            var randomNumber = new byte[64];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            string refreshToken = Convert.ToBase64String(randomNumber);
+
+            // TODO: create application repository to persist
+            //await _RefreshTokenRepository.Add(user.Id, refreshToken, _JwtBearerConfiguration.RefreshTokenLifeTimeMinutesInteger);
+            return refreshToken;
         }
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string roleName)
