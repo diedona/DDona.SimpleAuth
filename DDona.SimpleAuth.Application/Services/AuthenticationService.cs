@@ -51,6 +51,11 @@ namespace DDona.SimpleAuth.Application.Services
             return await _UserManager.GetRolesAsync(requestedUser);
         }
 
+        public async Task<JwtTokenResponse> GenerateRefreshToken(string email, string refreshToken)
+        {
+            return null;
+        }
+
         public async Task<JwtTokenResponse> GenerateToken(string email)
         {
             var roles = await GetUserRolesAsync(email);

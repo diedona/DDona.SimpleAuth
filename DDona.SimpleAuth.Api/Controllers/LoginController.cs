@@ -37,7 +37,14 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return BadRequest();
 
             var principal = _AuthenticationService.GetPrincipalFromExpiredToken(oldToken.currentToken);
-            return Ok("ah ok");
+            if (principal is null)
+                return BadRequest();
+
+            var newToken = await _AuthenticationService.GenerateRefreshToken(principal.Identity?.Name, oldToken.refreshToken);
+            if(newToken is null)
+                return BadRequest();
+
+            return Ok(newToken);
         }
 
         [HttpGet("secured-administrator")]
