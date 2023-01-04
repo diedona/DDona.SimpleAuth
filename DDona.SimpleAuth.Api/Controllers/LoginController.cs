@@ -2,7 +2,6 @@
 using DDona.SimpleAuth.Application.Identity;
 using Microsoft.AspNetCore.Mvc;
 using DDona.SimpleAuth.Application.Services.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Api.Extensions;
@@ -27,11 +26,7 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return BadRequest("Failed to authenticate");
 
             var token = await _AuthenticationService.GenerateToken(request.Email);
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
-            });
+            return Ok(token);
         }
 
         [HttpGet("secured-administrator")]

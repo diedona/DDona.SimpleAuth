@@ -1,5 +1,6 @@
 ﻿using DDona.SimpleAuth.Application.Identity;
 using DDona.SimpleAuth.Application.Models.AppSettings;
+using DDona.SimpleAuth.Application.Models.Jwt;
 using DDona.SimpleAuth.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -44,7 +45,7 @@ namespace DDona.SimpleAuth.Application.Services
             return await _UserManager.GetRolesAsync(requestedUser);
         }
 
-        public async Task<JwtSecurityToken> GenerateToken(string email)
+        public async Task<JwtTokenResponse> GenerateToken(string email)
         {
             var roles = await GetUserRolesAsync(email);
             var claims = new List<Claim>() { new Claim(ClaimTypes.Sid, email) };
@@ -64,7 +65,12 @@ namespace DDona.SimpleAuth.Application.Services
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
 
-            return token;
+            return new JwtTokenResponse()
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                AccessTokenExpiration = token.ValidTo,
+                RefreshToken = "nothing yet"
+            };
         }
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string roleName)
