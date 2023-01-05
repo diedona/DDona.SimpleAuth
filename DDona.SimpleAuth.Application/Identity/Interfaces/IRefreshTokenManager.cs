@@ -2,7 +2,7 @@
 
 namespace DDona.SimpleAuth.Application.Identity.Interfaces
 {
-    public interface IRefreshTokenManager
+    public interface IRefreshTokenRepository
     {
         Task SaveToken(ApplicationUserRefreshToken refreshToken);
         Task<ApplicationUserRefreshToken?> FindRefreshToken(string userId, string refreshToken);

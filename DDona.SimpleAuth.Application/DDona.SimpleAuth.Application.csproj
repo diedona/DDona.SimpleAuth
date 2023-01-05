@@ -12,4 +12,8 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DDona.SimpleAuth.Domain\DDona.SimpleAuth.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

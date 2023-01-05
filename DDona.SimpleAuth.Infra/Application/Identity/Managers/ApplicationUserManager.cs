@@ -2,7 +2,7 @@
 using DDona.SimpleAuth.Application.Identity.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
-namespace DDona.SimpleAuth.Infra.Identity
+namespace DDona.SimpleAuth.Infra.Application.Identity.Managers
 {
     /// <summary>
     /// An adapter for the UserManager<T> from ASP NET CORE Identity

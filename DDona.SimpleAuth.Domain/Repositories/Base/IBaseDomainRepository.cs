@@ -2,7 +2,7 @@
 
 namespace DDona.SimpleAuth.Domain.Repositories.Base
 {
-    public interface IBaseRepository<T> where T : BaseEntity
+    public interface IBaseDomainRepository<T> where T : BaseEntity
     {
     }
 }

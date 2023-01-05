@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DDona.SimpleAuth.Infra.Repositories
 {
-    public class ProductRepository : BaseRepository<Product>, IProductRepository
+    public class ProductRepository : BaseDomainRepository<Product>, IProductRepository
     {
         public ProductRepository(SimpleAuthDbContext context) : base(context)
         {
