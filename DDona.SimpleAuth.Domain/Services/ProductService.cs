@@ -10,10 +10,10 @@ namespace DDona.SimpleAuth.Domain.Services
         private readonly IUnitOfWork _UnitOfWork;
         private readonly IProductRepository _ProductRepository;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IProductRepository productRepository)
         {
             _UnitOfWork = unitOfWork;
-            _ProductRepository = _UnitOfWork.ProductRepository;
+            _ProductRepository = productRepository;
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()

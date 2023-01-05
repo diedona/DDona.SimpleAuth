@@ -22,8 +22,11 @@ namespace DDona.SimpleAuth.Api
             services.AddRepositories();
             services.AddUnitOfWork();
             services.AddDomainServices();
-            services.AddApplicationUserManager();
+
+            services.AddApplicationManagers();
+            services.AddApplicationRepositories();
             services.AddApplicationServices();
+
             services.AddControllersWithConfigurations();
             services.AddAspNetCoreIdentity();
             services.AddJwtConfiguration(Configuration);

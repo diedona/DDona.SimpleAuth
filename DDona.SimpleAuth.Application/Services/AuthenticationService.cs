@@ -4,6 +4,7 @@ using DDona.SimpleAuth.Application.Identity.Interfaces;
 using DDona.SimpleAuth.Application.Models.AppSettings;
 using DDona.SimpleAuth.Application.Models.Jwt;
 using DDona.SimpleAuth.Application.Services.Interfaces;
+using DDona.SimpleAuth.Domain.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -16,17 +17,19 @@ namespace DDona.SimpleAuth.Application.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
+        private readonly IUnitOfWork _UnitOfWork;
         private readonly IUserManager _UserManager;
         private readonly IRoleManager _RoleManager;
-        private readonly IRefreshTokenManager _RefreshTokenManager;
+        private readonly IRefreshTokenRepository _RefreshTokenRepository;
         private readonly JwtBearerConfiguration _JwtBearerConfiguration;
 
-        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration, IRoleManager roleManager, IRefreshTokenManager refreshTokenManager)
+        public AuthenticationService(IUserManager userManager, IOptions<JwtBearerConfiguration> jwtBearerConfiguration, IRoleManager roleManager, IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork)
         {
             _UserManager = userManager;
             _JwtBearerConfiguration = jwtBearerConfiguration.Value;
             _RoleManager = roleManager;
-            _RefreshTokenManager = refreshTokenManager;
+            _RefreshTokenRepository = refreshTokenRepository;
+            _UnitOfWork = unitOfWork;
         }
 
         private SymmetricSecurityKey GetSymmetrictSecurityKey() => new(Encoding.UTF8.GetBytes(_JwtBearerConfiguration.Key));
@@ -62,17 +65,19 @@ namespace DDona.SimpleAuth.Application.Services
                 return null;
 
             var user = await _UserManager.FindByEmailAsync(email);
-            var refreshTokenEntity = await _RefreshTokenManager.FindRefreshToken(user.Id, refreshToken);
+            var refreshTokenEntity = await _RefreshTokenRepository.FindRefreshToken(user.Id, refreshToken);
             if (refreshTokenEntity is null)
                 return null;
 
             if (!refreshTokenEntity.IsTokenValid())
             {
-                await _RefreshTokenManager.DeleteToken(refreshTokenEntity);
+                await _RefreshTokenRepository.DeleteToken(refreshTokenEntity);
+                await _UnitOfWork.SaveChangesAsync();
                 return null;
             }
 
-            await _RefreshTokenManager.DeleteToken(refreshTokenEntity);
+            await _RefreshTokenRepository.DeleteToken(refreshTokenEntity);
+            await _UnitOfWork.SaveChangesAsync();
             return await GenerateToken(user.Email);
         }
 
@@ -107,7 +112,8 @@ namespace DDona.SimpleAuth.Application.Services
         {
             ApplicationUser user = await _UserManager.FindByEmailAsync(email);
             ApplicationUserRefreshToken newRefreshToken = GenerateRefreshTokenEntity(user.Id);
-            await _RefreshTokenManager.SaveToken(newRefreshToken);
+            await _RefreshTokenRepository.SaveToken(newRefreshToken);
+            await _UnitOfWork.SaveChangesAsync();
             return newRefreshToken.Token;
         }
 
