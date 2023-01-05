@@ -6,6 +6,7 @@ using DDona.SimpleAuth.Domain.Constants;
 using DDona.SimpleAuth.Api.Extensions;
 using DDona.SimpleAuth.Application.Identity.Entities;
 using DDona.SimpleAuth.Application.Models.Jwt;
+using DDona.SimpleAuth.Application.Extensions;
 
 namespace DDona.SimpleAuth.Api.Controllers
 {
@@ -37,10 +38,7 @@ namespace DDona.SimpleAuth.Api.Controllers
                 return BadRequest();
 
             var principal = _AuthenticationService.GetPrincipalFromExpiredToken(oldToken.currentToken);
-            if (principal is null)
-                return BadRequest();
-
-            var newToken = await _AuthenticationService.GenerateRefreshToken(principal.Identity?.Name, oldToken.refreshToken);
+            var newToken = await _AuthenticationService.GenerateRefreshToken(principal, oldToken.refreshToken);
             if(newToken is null)
                 return BadRequest();
 

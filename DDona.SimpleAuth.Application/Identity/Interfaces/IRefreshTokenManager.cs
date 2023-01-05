@@ -6,5 +6,6 @@ namespace DDona.SimpleAuth.Application.Identity.Interfaces
     {
         Task SaveToken(ApplicationUserRefreshToken refreshToken);
         Task<ApplicationUserRefreshToken?> FindRefreshToken(string userId, string refreshToken);
+        Task DeleteToken(ApplicationUserRefreshToken refreshTokenEntity);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace DDona.SimpleAuth.Api.Extensions
+namespace DDona.SimpleAuth.Application.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {

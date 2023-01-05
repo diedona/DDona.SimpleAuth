@@ -26,5 +26,11 @@ namespace DDona.SimpleAuth.Infra.Identity
         {
             return await _Set.FirstOrDefaultAsync(x => x.AspNetUserId.Equals(userId) && x.Token.Equals(refreshToken));
         }
+
+        public async Task DeleteToken(ApplicationUserRefreshToken refreshTokenEntity)
+        {
+            _Set.Remove(refreshTokenEntity);
+            await _Context.SaveChangesAsync();
+        }
     }
 }

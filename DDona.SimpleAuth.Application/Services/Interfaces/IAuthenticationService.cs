@@ -11,6 +11,6 @@ namespace DDona.SimpleAuth.Application.Services.Interfaces
         Task<JwtTokenResponse> GenerateToken(string email);
         Task<IdentityResult> CreateAsync(ApplicationUser user, string password, string role);
         ClaimsPrincipal? GetPrincipalFromExpiredToken(string accessToken);
-        Task<JwtTokenResponse> GenerateRefreshToken(string email, string refreshToken);
+        Task<JwtTokenResponse?> GenerateRefreshToken(ClaimsPrincipal? principal, string refreshToken);
     }
 }

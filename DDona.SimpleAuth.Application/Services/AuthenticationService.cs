@@ -1,4 +1,5 @@
-﻿using DDona.SimpleAuth.Application.Identity.Entities;
+﻿using DDona.SimpleAuth.Application.Extensions;
+using DDona.SimpleAuth.Application.Identity.Entities;
 using DDona.SimpleAuth.Application.Identity.Interfaces;
 using DDona.SimpleAuth.Application.Models.AppSettings;
 using DDona.SimpleAuth.Application.Models.Jwt;
@@ -51,9 +52,28 @@ namespace DDona.SimpleAuth.Application.Services
             return await _UserManager.GetRolesAsync(requestedUser);
         }
 
-        public async Task<JwtTokenResponse> GenerateRefreshToken(string email, string refreshToken)
+        public async Task<JwtTokenResponse?> GenerateRefreshToken(ClaimsPrincipal? principal, string refreshToken)
         {
-            return null;
+            if (principal is null)
+                return null;
+
+            var email = principal.GetUsername();
+            if (string.IsNullOrEmpty(email))
+                return null;
+
+            var user = await _UserManager.FindByEmailAsync(email);
+            var refreshTokenEntity = await _RefreshTokenManager.FindRefreshToken(user.Id, refreshToken);
+            if (refreshTokenEntity is null)
+                return null;
+
+            if (!refreshTokenEntity.IsTokenValid())
+            {
+                await _RefreshTokenManager.DeleteToken(refreshTokenEntity);
+                return null;
+            }
+
+            await _RefreshTokenManager.DeleteToken(refreshTokenEntity);
+            return await GenerateToken(user.Email);
         }
 
         public async Task<JwtTokenResponse> GenerateToken(string email)

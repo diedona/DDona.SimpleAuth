@@ -2,10 +2,10 @@
 {
     public class ApplicationUserRefreshToken
     {
-        public ApplicationUser AspNetUser { get; set; }
-        public string AspNetUserId { get; set; }
-        public string Token { get; set; }
-        public DateTime ValidTo { get; set; }
+        public ApplicationUser AspNetUser { get; private set; }
+        public string AspNetUserId { get; private set; }
+        public string Token { get; private set; }
+        public DateTime ValidTo { get; private set; }
 
         private ApplicationUserRefreshToken() { } //EF
 
@@ -15,5 +15,7 @@
             Token = token;
             ValidTo = validTo;
         }
+
+        public bool IsTokenValid() => ValidTo >= DateTime.UtcNow;
     }
 }
